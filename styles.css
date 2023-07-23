@@ -1,0 +1,50 @@
+form {
+
+    justify-content: center;
+    min-height: 100vh;
+}
+
+/* Adjust the width of the form on larger screens */
+@media (min-width: 576px) {
+    form {
+        width: 400px;
+        margin: auto;
+    }
+}
+
+/* Style the form labels */
+label {
+    font-weight: 500;
+}
+
+/* Add some space between the form groups */
+.mb-3 {
+    margin-bottom: 1.5rem;
+}
+
+/* Style the input fields */
+input[type="text"],
+input[type="email"],
+select {
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+    padding: 0.5rem;
+    width: 100%;
+}
+
+/* Style the select dropdown arrow */
+select::-ms-expand {
+    display: none;
+}
+
+/* Style the submit button */
+.btn-primary {
+    width: 100%;
+    padding: 0.75rem;
+    font-size: 1rem;
+}
+
+/* Add some spacing below the submit button */
+.btn-primary {
+    margin-bottom: 1rem;
+}
