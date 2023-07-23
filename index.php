@@ -1,26 +1,39 @@
 <?php
 
+session_start(); // Don't forget to start the session to use session variables.
+
 include 'functions.php';
 
-if(isset($_POST['bookbtn'])){
-	$name = $_POST['name'];
-	$email = $_POST['email'];
-	$mobile = $_POST['mobile'];
-	$location = $_POST['location'];
-	$visitdate = $_POST['visitdate'];
+if (isset($_POST['bookbtn'])) {
+    $name = $_POST['name'];
+    $email = $_POST['email'];
+    $mobile = $_POST['mobile'];
+    $location = $_POST['location'];
+    $visitdate = $_POST['visitdate'];
 
-	if($name == "" || $email == "" || $mobile == "" || $location == "" || $visitdate == ""){
-		$status = "All fields are required";
-	}else{
-	$status = placeBooking($name, $email, $mobile, $location, $visitdate);
+    // Validate if all fields are filled
+    if ($name == "" || $email == "" || $mobile == "" || $location == "" || $visitdate == "") {
+        $status = "All fields are required";
+    } else {
+        // Convert current date and time to a timestamp
+        $current_timestamp = time();
 
-	$_SESSION['booking_time'] = time(); 
+        // Convert the selected visit date to a timestamp
+        $selected_timestamp = strtotime($visitdate);
 
-	header("Location: payment.php");
-	exit;
-		
-	}
+        // Check if the selected visit date is in the past or too far in the future (e.g., 7 days from now)
+        $valid_range = 7 * 24 * 60 * 60; // 7 days in seconds
+        if ($selected_timestamp < $current_timestamp || ($selected_timestamp - $current_timestamp) > $valid_range) {
+            $status = "Invalid visit date. Please select a date within the next 7 days.";
+        } else {
+            $status = placeBooking($name, $email, $mobile, $location, $visitdate);
 
+            $_SESSION['booking_time'] = time();
+
+            header("Location: payment.php");
+            exit;
+        }
+    }
 }
 
 // Check if there is a booking time set in the session
@@ -105,7 +118,7 @@ if (isset($_SESSION['booking_time'])) {
 		</div>
 		<div class="mb-3">
 			<label for="exampleInputPassword1" class="form-label">Visit date</label>
-			<input type="datetime-local" class="form-control" name="visitdate">
+			<input type="datetime-local" class="form-control" name="visitdate" step="3600">
 		</div>
 
 		<button type="submit" name="bookbtn" class="btn btn-primary">Submit</button>
